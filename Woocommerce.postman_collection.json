@@ -1,0 +1,182 @@
+{
+	"info": {
+		"_postman_id": "cd95bb47-e105-46aa-b5c6-a6790d7a0c95",
+		"name": "Woocommerce",
+		"description": "Woocommerce API testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Create Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"pm.environment.set(\"orderId\", responseJson.id);",
+									"",
+									"pm.test(\"Order created\", () => {",
+									"    pm.expect(responseJson.status).to.eql(\"completed\");",
+									"});",
+									"",
+									"pm.test(\"Order created with billing info\", () => {",
+									"    pm.expect(responseJson.billing.first_name).to.eql(\"John\");",
+									"});",
+									"",
+									"pm.test(\"Status code is 201\", () => {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"payment_method\":\"bacs\",\n  \"payment_method_title\":\"Direct Bank Transfer\",\n  \"set_paid\":\"true\",\n  \"billing\":{\n    \"first_name\":\"John\",\n    \"last_name\":\"Doe\",\n    \"address_1\":\"969 Market\",\n    \"address_2\":\"\",\n    \"city\":\"San Francisco\",\n    \"state\":\"CA\",\n    \"postcode\":\"94103\",\n    \"country\":\"US\",\n    \"email\":\"john.doe@example.com\",\n    \"phone\":\"(555) 555-5555\"\n  },\n  \"shipping\":{\n    \"first_name\":\"John\",\n    \"last_name\":\"Doe\",\n    \"address_1\":\"969 Market\",\n    \"address_2\":\"\",\n    \"city\":\"San Francisco\",\n    \"state\":\"CA\",\n    \"postcode\":\"94103\",\n    \"country\":\"US\"\n  },\n  \"line_items\":[\n    {\n      \"product_id\":\"93\",\n      \"quantity\":\"2\"\n    },\n    {\n      \"product_id\":\"22\",\n      \"variation_id\":\"23\",\n      \"quantity\":\"1\"\n    }\n  ],\n  \"shipping_lines\":[\n    {\n      \"method_id\":\"flat_rate\",\n      \"method_title\":\"Flat Rate\",\n      \"total\":\"10.00\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/orders",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get an Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Order retrieved\", () => {",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"orderId\"));",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/orders/{{orderId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"orders",
+								"{{orderId}}"
+							]
+						},
+						"description": "Retrieves an order based on its Id"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Order deleted\", () => {",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"orderId\"));",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/orders/{{orderId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"orders",
+								"{{orderId}}"
+							]
+						},
+						"description": "Deletes an order based on its Id"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{woocommercePassword}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{woocommerceUsername}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "OrderId",
+			"value": "variable_key"
+		}
+	]
+}
