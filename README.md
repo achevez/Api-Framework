@@ -12,4 +12,6 @@ It contains a Postman collection and environment meant to be run in Newman.
 ## Instructions to execute:
 1. Clone the repository and open a terminal.
 2. Go to the project folder and to run the tests, execute:
-newman run Woocommerce.postman_collection.json --env-var url=<endpoint_url> --env-var woocommerceUsername="<username>" --env-var woocommercePassword="password"
+```
+newman run Woocommerce.postman_collection.json --env-var url=<endpoint_url> --env-var woocommerceUsername="<username>" --env-var woocommercePassword="<password>"
+```
